@@ -7,10 +7,11 @@ pipeline {
 
     stages {
         stage('Clonar repositorio') {
-            steps {
-                git credentialsId: 'github-cred', url: 'https://github.com/CarlosMany/api-tareas.git'
-            }
-        }
+    steps {
+        git credentialsId: 'github-cred', url: 'https://github.com/CarlosMany/api-tareas.git', branch: 'main'
+    }
+}
+
 
         stage('Construir imagen Docker') {
             steps {
