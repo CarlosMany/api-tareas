@@ -1,21 +1,11 @@
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout(true)
-    }
-
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-cred')
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Inicio') {
             steps {
                 script {
