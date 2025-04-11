@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+        stage('Inicio') {
+            steps {
+                script {
+                    echo "Iniciando el pipeline..."
+                }
+            }
+        }
         stage('Construir imagen Docker') {
             steps {
                 script {
