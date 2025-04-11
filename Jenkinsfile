@@ -6,36 +6,40 @@ pipeline {
     }
 
     stages {
-        stage('Inicio') {
+        stage('Clonar repositorio') {
             steps {
-                script {
-                    echo "Iniciando el pipeline..."
-                }
+                cleanWs()
+                git(
+                    url: 'https://github.com/CarlosMany/api-tareas.git',
+                    branch: 'main'
+                )
             }
         }
-
+        
         stage('Construir imagen Docker') {
             steps {
                 script {
-                    docker.build("carlosmany/api-tareas")
+                    def image = docker.build("carlosmany/api-tareas:${env.BUILD_ID}")
+                    image.push()
                 }
             }
         }
-
-        stage('Login a Docker Hub') {
+        stage('Desplegar en Docker Hub') {
             steps {
                 script {
-                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKERHUB_CREDENTIALS) {
+                        def image = docker.image("carlosmany/api-tareas:${env.BUILD_ID}")
+                        image.push()
+                    }
                 }
             }
         }
+    
+    }
 
-        stage('Push a Docker Hub') {
-            steps {
-                script {
-                    docker.image("carlosmany/api-tareas").push()
-                }
-            }
+    post {
+        always {
+            echo "Pipeline finalizado."
         }
     }
 }
