@@ -48,10 +48,10 @@ stage('Despliegue remoto') {
     }
     post {
         success {
-            echo 'Despliegue exitoso 🎉'
+            echo 'Despliegue exitoso '
         }
         failure {
-            echo 'Algo falló en el pipeline 😢'
+            echo 'Algo falló en el pipeline '
         }
     }
 }
